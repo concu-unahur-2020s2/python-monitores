@@ -45,8 +45,11 @@ En `prod-cons.py` hay un ejemplo a modo de guía de uso de un monitor.
 
 1. Miralo un rato y asegurate de entender la traza (línea de tiempo de ejecución).
 1. ¿Por qué el thread que consume sigue consumiendo hasta que se acaban los ítems?
+    - Porque a medida que el productor produce los items notifica al consumidor que puede consumir.
 2. Suponete que hubiera más de un thread consumiendo. ¿Puede haber más de un consumidor consumiendo a la vez? ¿Por qué? ¿En qué parte de código se maneja eso?
+    - Si, puede haber mas de un consumidor consumiendo a la vez. Porque Se retiran elementos de una lista que son totalmente independientes y una vez que un hilo lo retiro ya no puede ser accedido por otro hilo pero si uno quiere asegurarse puede implementar un 'lock' al momento de retirar el item de la lista.
 1. En comensales hay también un esquema de productor (el cocinero) y de consumidores (los comensales),  ¿cuál o cuáles son las diferencias de comensales respecto a este?
+    - La diferencia es que en comensales se resta 1 a una variable, que es un solo recurso y que puede ser accedido por dos hilos a la vez ya que restar/sumar 1 no es una operacion atomica. En este caso el consumidor accede a una lista de recursos que son independientes uno de otro, por lo que no se ven afectados si hay varios hilos retirando items de la lista.
 1. Modificá `prod-cons.py` para que haya varios threads consumiendo.
 1. Agregá la posibilidad de que haya consumidores que consuman distintas cantidades (y no siempre de a un ítem).
 1. Agregá que cada consumidor pueda consumir solamente una vez (la cantidad que corresponda).
