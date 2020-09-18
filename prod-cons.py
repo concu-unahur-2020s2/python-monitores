@@ -44,6 +44,10 @@ cons1.start()
 # El productor
 productor(items_monit)
 
+# Respuesta
+# 1 la linea es crea primero todos los itmes y luego los consume
+# 2 el thread sique consumiendo hasta que cumple la condicion. Cuando cumple la condicion el monitor hace el "release"
+# 3 no puede haber mas de un thread consumiendo a la vez. Hasta que el monitor no resibe la senal no hace el release
+# " self.monitor,wait()" es el que manda la señal para que el monitor vuelva hacer el acquire
 
 
-        
