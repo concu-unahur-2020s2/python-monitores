@@ -6,6 +6,7 @@ logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message
 
 
 def productor(monitor):
+    print("Voy a producir")
     for i in range(30):
         with monitor:          # hace el acquire y al final un release
             items.append(i)    # agrega un ítem
