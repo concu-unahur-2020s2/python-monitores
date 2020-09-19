@@ -49,7 +49,9 @@ En `prod-cons.py` hay un ejemplo a modo de guía de uso de un monitor.
 ``` Consume hasta que quedan items > 1 como dice la condicion del while ```
 
 3. Suponete que hubiera más de un thread consumiendo. ¿Puede haber más de un consumidor consumiendo a la vez? ¿Por qué? ¿En qué parte de código se maneja eso?
-```No, solo un consumidor puede consumir a la vez. Ejecutar un wait, que libera el bloqueo y se queda en espera hasta que el monitor le avisa que esta disponible el recurso que quiere consumir.```
+
+```No, solo un consumidor puede consumir a la vez. Al ejecutar el metodo wait, que libera el bloqueo y se queda en espera hasta que el monitor le avisa que esta disponible el recurso que quiere consumir.```
+
 ```Segun lo que vi en la documentacion es posible asignar un timeout```
 
 4. En comensales hay también un esquema de productor (el cocinero) y de consumidores (los comensales),  ¿cuál o cuáles son las diferencias de comensales respecto a este?
