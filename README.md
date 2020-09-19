@@ -44,12 +44,22 @@ Se puede leer desde acá [python-threading-condition-objects](https://docs.pytho
 En `prod-cons.py` hay un ejemplo a modo de guía de uso de un monitor. 
 
 1. Miralo un rato y asegurate de entender la traza (línea de tiempo de ejecución).
-1. ¿Por qué el thread que consume sigue consumiendo hasta que se acaban los ítems?
-2. Suponete que hubiera más de un thread consumiendo. ¿Puede haber más de un consumidor consumiendo a la vez? ¿Por qué? ¿En qué parte de código se maneja eso?
-1. En comensales hay también un esquema de productor (el cocinero) y de consumidores (los comensales),  ¿cuál o cuáles son las diferencias de comensales respecto a este?
-1. Modificá `prod-cons.py` para que haya varios threads consumiendo.
-1. Agregá la posibilidad de que haya consumidores que consuman distintas cantidades (y no siempre de a un ítem).
-1. Agregá que cada consumidor pueda consumir solamente una vez (la cantidad que corresponda).
+
+2. ¿Por qué el thread que consume sigue consumiendo hasta que se acaban los ítems?
+``` Consume hasta que quedan items > 1 como dice la condicion del while ```
+
+3. Suponete que hubiera más de un thread consumiendo. ¿Puede haber más de un consumidor consumiendo a la vez? ¿Por qué? ¿En qué parte de código se maneja eso?
+```No, solo un consumidor puede consumir a la vez. Ejecutar un wait, que libera el bloqueo y se queda en espera hasta que el monitor le avisa que esta disponible el recurso que quiere consumir.```
+```Segun lo que vi en la documentacion es posible asignar un timeout```
+
+4. En comensales hay también un esquema de productor (el cocinero) y de consumidores (los comensales),  ¿cuál o cuáles son las diferencias de comensales respecto a este?
+``` En comensales, varios threads podian consumir al mismo tiempo, en este caso, eso no se puede```
+
+5. Modificá `prod-cons.py` para que haya varios threads consumiendo.
+
+6. Agregá la posibilidad de que haya consumidores que consuman distintas cantidades (y no siempre de a un ítem).
+
+7. Agregá que cada consumidor pueda consumir solamente una vez (la cantidad que corresponda).
 
 
 ## Bolitas

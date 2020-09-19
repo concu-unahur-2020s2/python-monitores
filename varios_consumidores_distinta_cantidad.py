@@ -1,8 +1,11 @@
 import threading
 import time
 import logging
+import random
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
+
+cantConsumidores = 5
 
 
 def productor(monitor):
@@ -14,19 +17,20 @@ def productor(monitor):
 
 
 class Consumidor(threading.Thread):
-    def __init__(self, monitor):
+    def __init__(self, monitor,cantAConsumir):
         super().__init__()
         self.monitor = monitor
+        self.cantAConsumir = cantAConsumir #Agrego la cantidad a consumir a la clase
 
     def run(self):
         while (True):
             
             with self.monitor:          # Hace el acquire y al final un release    
-                while len(items)<1:     # si no hay ítems para consumir
+                while len(items)<self.cantAConsumir:     # si no hay ítems para consumir
                     self.monitor.wait()  # espera la señal, es decir el notify
-                x = items.pop(0)     # saca (consume) el primer ítem
-            
-            logging.info(f'Consumí {x}')
+                for i in range(self.cantAConsumir):
+                    x = items.pop(0)     # saca (consume) el primer ítem
+                    logging.info(f'Consumí {x}')
             time.sleep(1)
 
 
@@ -36,13 +40,19 @@ items = []
 # El monitor
 items_monit = threading.Condition()
 
-# un thread que consume
-cons1 = Consumidor(items_monit)
-cons1.start()
+
+# una lista de consumidores
+lista = []
+for c in range(cantConsumidores):
+    lista.append(c)
+
+# lanzo los consumidores
+for c in lista:
+    cantAConsumir = random.randrange(3,8,1) #genero un numero ramdom entre 3 y 8.
+    cons = Consumidor(items_monit,cantAConsumir)
+    cons.start()
+
+
 
 # El productor
 productor(items_monit)
-
-
-
-        

@@ -4,6 +4,7 @@ import logging
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
+cantConsumidores = 5
 
 def productor(monitor):
     for i in range(30):
@@ -36,13 +37,18 @@ items = []
 # El monitor
 items_monit = threading.Condition()
 
+
 # un thread que consume
-cons1 = Consumidor(items_monit)
-cons1.start()
+lista = []
+for c in range(cantConsumidores):
+    lista.append(c)
+
+
+for c in lista:
+    cons = Consumidor(items_monit)
+    cons.start()
+
+
 
 # El productor
 productor(items_monit)
-
-
-
-        
