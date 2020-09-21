@@ -22,16 +22,17 @@ class Consumidor(threading.Thread):
 
     def run(self):
         x = []
-        with self.monitor:          # Hace el acquire y al final un release    
-            while len(items)<self.cantidadAConsumir:     # si no hay ítems para consumir
-                self.monitor.wait()  # espera la señal, es decir el notify
+        while (True):
+            with self.monitor:          # Hace el acquire y al final un release    
+                while len(items)<self.cantidadAConsumir:     # si no hay ítems para consumir
+                    self.monitor.wait()  # espera la señal, es decir el notify
+                
+                for i in range(self.cantidadAConsumir):
+                    x.append(items.pop(0))     # saca (consume) el primer ítem
 
-            for i in range(self.cantidadAConsumir):
-                x.append(items.pop(0))     # saca (consume) el primer ítem
-
-        
-        logging.info(f'Consumí {x}')
-        time.sleep(1)
+            logging.info(f'Consumí {x}')
+            time.sleep(1)
+            break
 
 
 # la lista de ítems a consumir
@@ -41,7 +42,7 @@ items = []
 items_monit = threading.Condition()
 
 # un thread que consume
-for i in range(4):
+for i in range(5):
     Consumidor(items_monit, i+1).start()
 
 
