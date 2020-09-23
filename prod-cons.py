@@ -44,6 +44,24 @@ cons1.start()
 # El productor
 productor(items_monit)
 
+# Respuestas
 
+#1. ¿Por qué el thread que consume sigue consumiendo hasta que se acaban los ítems?
 
-        
+#Porque el notify le notifica que hay items para consumir al consumidor.
+
+#2. Suponete que hubiera más de un thread consumiendo. ¿Puede haber más de un consumidor consumiendo a la vez? 
+# ¿Por qué? ¿En qué parte de código se maneja eso?
+
+# Si. Porque los items estan en una lista aparte de consumidor, en donde no afecta a los hilos.
+# En esta parte: 
+#class Consumidor(threading.Thread):
+    #def __init__(self, monitor):
+     #   super().__init__()
+      #  self.monitor = monitor
+
+#3. En comensales hay también un esquema de productor (el cocinero) y de consumidores (los comensales),  
+#¿cuál o cuáles son las diferencias de comensales respecto a este?
+
+#La diferencia es que comensales estan accediendo a una variable global que resta o suma depende el caso, y
+# en este caso se accede a una lista independiente en donde no afecta si hay muchos hilos retirando items
