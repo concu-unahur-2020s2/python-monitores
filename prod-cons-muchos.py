@@ -1,6 +1,7 @@
 import threading
 import time
 import logging
+import random
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S', level=logging.INFO)
 
@@ -25,6 +26,7 @@ class Consumidor(threading.Thread):
             with self.monitor:          # Hace el acquire y al final un release    
                 while len(items)<1:     # si no hay ítems para consumir
                     self.monitor.wait()  # espera la señal, es decir el notify
+                
                 x = items.pop(0)     # saca (consume) el primer ítem
             
             logging.info(f'Consumí {x}')
