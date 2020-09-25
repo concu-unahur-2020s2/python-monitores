@@ -7,7 +7,7 @@ logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message
 
 def productor(monitor):
     print("Voy a producir")
-    for i in range(30):
+    for i in range(10):
         with monitor:          # hace el acquire y al final un release
             items.append(i)    # agrega un ítem
             monitor.notify()   # Notifica que ya se puede hacer acquire
@@ -30,8 +30,9 @@ class Consumidor(threading.Thread):
             logging.info(f'Consumí {x}')
             time.sleep(1)
 
-# varios consumidores
-consumidores = 6
+# varios consumudirores
+consumidores = 3
+
 # la lista de ítems a consumir
 items = []
 
@@ -39,17 +40,9 @@ items = []
 items_monit = threading.Condition()
 
 # un thread que consume
-for c in range(consumidores):
-    c = Consumidor(items_monit)
-    c.start()
+cons1 = Consumidor(items_monit)
+cons1.start()
 
 # El productor
 productor(items_monit)
-
-# Respuesta
-# 1 la linea es crea primero todos los itmes y luego los consume
-# 2 el thread sique consumiendo hasta que cumple la condicion. Cuando cumple la condicion el monitor hace el "release"
-# 3 no puede haber mas de un thread consumiendo a la vez. Hasta que el monitor no resibe la senal no hace el release
-# " self.monitor,wait()" es el que manda la señal para que el monitor vuelva hacer el acquire
-
 
