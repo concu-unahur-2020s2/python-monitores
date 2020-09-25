@@ -1,3 +1,4 @@
+from random import Random
 import threading
 import time
 import logging
@@ -7,18 +8,48 @@ logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message
 
 frasco = []
 
-def frasco(monitor):
-    for i in range(50):
-        with monitor:
-            frasco.append(i)
-            monitor.notify()
-        time.sleep(2)
 
 class Jugador(threading.Thread):
     def __init__(self, monitor):
-        super().__init__()
+        super().__init__
         self.monitor = monitor
 
-    def sacar(self,cantidad):
-        
+    def sacar(self):
+        cantidad = random.randrange(1,5)
+        cont = None
+
+        with self.monitor:
+            while len(frasco) < cantidad:
+                logging.info(f'saque {cantidad} bolitas')
+                self.monitor.wait()
+                
+            while cont < cantidad:
+                frasco.pop(0)
+                cont +=1
+                logging.info(f'saque {cantidad} bolitas')
+
+    def poner(self):
+        cantidad = random.randrange(1,6)
+        cont = None
+
+        with self.monitor:
+            for i in range(cantidad):
+                frasco.append(i)
+                self.monitor.notify()
+                cont +=1
+            logging.info(f'puse {cantidad} bolitas')
+
+
+
     def run(self):
+        while True:
+            self.sacar()
+            time.sleep(random.uniform(0.5,1.2))
+            self.poner()
+            time.sleep(random.uniform(0.5,1))
+
+monitor = threading.Condition()
+jugadores = 6
+
+for j in range(jugadores):
+    Jugador(monitor).start()
